@@ -1,0 +1,16 @@
+[root@utility tftpboot]# pwd
+/var/lib/tftpboot
+[root@utility tftpboot]# tree
+.
+├── BOOTX64.EFI        # extracted from rhvh iso
+├── grub.cfg
+├── grubx64.efi        # extracted from rhvh iso 
+├── images
+│   └── rhvh4.4
+│       ├── initrd.img        # extracted from rhvh iso
+│       └── vmlinuz        # extracted from rhvh iso
+└── pxelinux
+    ├── initrd.img        # extracted from rhvh iso
+    ├── ldlinux.c32
+    ├── pxelinux.0        # extracted from rhvh iso
+    └── vmlinuz        # extracted from rhvh iso
