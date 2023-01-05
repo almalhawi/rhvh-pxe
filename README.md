@@ -21,13 +21,12 @@ root@utility:~# cp -r /mnt/rhvh/ /var/www/html/rhvh
 ```console
 root@utility:~# cp /mnt/rhvh/Packages/redhat-virtualization-host-image-update* /tmp
 root@utility:~# cd /tmp
-root@utility:~# rpm2cpio redhat-virtualization-host-image-update* | cpio -idmv
+[root@utility tmp]# rpm2cpio redhat-virtualization-host-image-update* | cpio -idmv
 ./usr/share/redhat-virtualization-host/image
 ./usr/share/redhat-virtualization-host/image/redhat-virtualization-host-4.5.3-202212070734_8.6.squashfs.img
 ./usr/share/redhat-virtualization-host/image/redhat-virtualization-host-4.5.3-202212070734_8.6.squashfs.img.meta
 2170306 blocks
 ```
-
 * Configure dhcpd
 
 ```console
@@ -71,7 +70,7 @@ EOF
 ```
 * Copy RHV boot images to your tftp server directory
 ```console
-root@utility:~#  mkdir -pv /var/lib/tftpboot/images/rhvh4.4
+root@utility:~# mkdir -pv /var/lib/tftpboot/images/rhvh4.4
 root@utility:~# cp /mnt/rhvh/images/pxeboot/{vmlinuz,initrd.img} /var/lib/tftpboot/images/rhvh4.4
 ```
 * Copy ldlinux.c32 and pxelinux.0 to your tftp server directory
@@ -105,3 +104,8 @@ menuentry  'Install RHVH 4.4' --class fedora --class gnu-linux --class gnu --cla
 }
 EOF
 ```
+
+* Configure your kickstart file
+1. Use the [Kickstart Generator](https://access.redhat.com/labs/kickstartconfig/)
+2. Use the template from @Kimmoini and modify as needed (https://github.com/kenmoini/redhat-at-home/blob/master/kickstarts/rhv44.cfg)[Kickstart Template]
+3. Save it in /var/www/html/rhvh/ks.cfg
