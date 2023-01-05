@@ -77,7 +77,7 @@ root@utility:~# cp /mnt/rhvh/images/pxeboot/{vmlinuz,initrd.img} /var/lib/tftpbo
 * Copy ldlinux.c32 and pxelinux.0 to your tftp server directory
 1. Create /var/lib/tftpboot/pxelinux directory
 2. Download syslinux-tftpboot-version-architecture.rpm package (replace version-architecture with the one from your repository)
-3. Extract pxelinux.0 and ldlinux.c32 files
+3. Extract pxelinux.0 and ldlinux.c32 files and copy them to your tftp server directory
 ```console
 root@utility:~# mkdir -pv /var/lib/tftpboot/pxelinux
 root@utility:~# cd /tmp
