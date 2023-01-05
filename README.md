@@ -31,7 +31,7 @@ root@utility:~# rpm2cpio redhat-virtualization-host-image-update* | cpio -idmv
 * Configure dhcpd
 
 ```console
-root@utility:~# cat << EOF > /etc/dhcpd/dhcpd.conf >
+root@utility:~# cat << EOF > /etc/dhcpd/dhcpd.conf 
 #
 # DHCP Server Configuration file.
 #   see /usr/share/doc/dhcp-server/dhcpd.conf.example
