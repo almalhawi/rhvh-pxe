@@ -1,8 +1,7 @@
 # Configuring a PXE, TFTP, DHCPD, HTTP server to automate Red Hat Virtualization Hosts Deployment on UEFI booting
 
 ## Preparing the Installation Environment
-* Download RHVH from Red Hat Portal and upload it to your pxe server
-https://access.redhat.com/products/red-hat-virtualization#getstarted
+* [Download RHVH from Red Hat Portal and upload it to your pxe server](https://access.redhat.com/products/red-hat-virtualization#getstarted)
 
 * Install httpd, tftp-server, and dhcp-server, configure firewall and start services
 ```console
@@ -70,4 +69,39 @@ host rhvh1 {
 }
 EOF
 ```
+* Copy RHV boot images to your tftp server directory
+```console
+root@utility:~#  mkdir -pv /var/lib/tftpboot/images/rhvh4.4
+root@utility:~# cp /mnt/rhvh/images/pxeboot/{vmlinuz,initrd.img} /var/lib/tftpboot/images/rhvh4.4
+```
+* Copy ldlinux.c32 and pxelinux.0 to your tftp server directory
+1. Create /var/lib/tftpboot/pxelinux directory
+2. Download syslinux-tftpboot-version-architecture.rpm package (replace version-architecture with the one from your repository)
+3. Extract pxelinux.0 and ldlinux.c32 files
+```console
+root@utility:~# mkdir -pv /var/lib/tftpboot/pxelinux
+root@utility:~# cd /tmp
+root@utility:~# yum search syslinux-tftpboot
+======= Name Exactly Matched: syslinux-tftpboot =======
+syslinux-tftpboot.noarch : SYSLINUX modules in /tftpboot, available for network booting
+[root@utility tmp]# yum install --downloadonly --destdir . syslinux-tftpboot.noarch -y
+[root@utility tmp]# ll
+total 1085796
+-r--r--r--. 1 root root 1111377302 Jan  5 03:00 redhat-virtualization-host-image-update-4.5.3-202212070734_8.6.x86_64.rpm
+-rw-r--r--. 1 root root     473356 Jan  5 03:23 syslinux-tftpboot-6.04-5.el8.noarch.rpm  # <--- This is the one we want
 
+[root@utility tmp]# rpm2cpio syslinux-tftpboot-6.04-5.el8.noarch.rpm | cpio -dimv
+[root@utility tmp]# cp /tmp/tftpboot/{pxelinux.0,ldlinux.c32} /var/lib/tftpboot/pxelinux/
+```
+* Create grub.cfg file
+```console
+# cat << EOF > /var/tftpboot/grub.cfg
+rd.net.timeout.carrier=60
+set default=10
+set timeout=3
+menuentry  'Install RHVH 4.4' --class fedora --class gnu-linux --class gnu --class os {
+   linuxefi images/rhvh4.4/vmlinuz inst.ks=http://<pxe-server-ip>/rhvh/ks.cfg inst.stage2=http://<pxe-server-ip>/rhvh quiet
+   initrdefi images/rhvh4.4/initrd.img
+}
+EOF
+```
