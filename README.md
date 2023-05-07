@@ -94,7 +94,7 @@ total 1085796
 ```
 * Create grub.cfg file
 ```console
-# cat << EOF > /var/tftpboot/grub.cfg
+# cat << EOF > /var/lib/tftpboot/grub.cfg
 rd.net.timeout.carrier=60
 set default=10
 set timeout=3
