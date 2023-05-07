@@ -5,7 +5,7 @@
 
 * Install httpd, tftp-server, and dhcp-server, configure firewall and start services
 ```console
-root@utility:~# yum install -y httpd tftp-server dhcpd
+root@utility:~# yum install -y httpd tftp-server dhcp-server
 root@utility:~# firewall-cmd --add-service={http,tftp,dhcp} --permanent
 root@utility:~# firewall-cmd --runtime-to-permanent
 root@utility:~# systemctl enable --now httpd dhcpd tftp
